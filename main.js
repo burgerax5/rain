@@ -1,19 +1,53 @@
-// Toggle Rain
+//Toggle Sound
+let toggleSound = document.getElementById('toggle-sound');
+let pageSound = document.getElementById('audio-player');
+let mute = false
+
+function checkSound(){
+    if(mute === true){
+        let x = pageSound.innerHTML;
+        pageSound.innerHTML = x.substring(0,x.indexOf(' ')) + ' muted' + x.substring(x.indexOf(' '))
+    }
+    else{
+        pageSound.innerHTML = pageSound.innerHTML.replace('muted','')
+    }
+}
+
+toggleSound.addEventListener('click', () => {
+    if(mute === false){
+        toggleSound.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" /></svg>'
+        mute = true;
+        localStorage.setItem("mute", mute)
+        checkSound()
+    }
+    else{
+        toggleSound.innerHTML = '<svg style="width:24px;height:24px"viewBox="0 0 24 24"><path fill="currentColor"d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" /></svg>'
+        mute = false;
+        localStorage.removeItem("mute")
+        checkSound()
+    }
+})
+
+// Toggle Rain/Storm
 let toggleRain = document.getElementById('toggle-rain');
-let rain = true
+let storm = false
 
 toggleRain.addEventListener('click', () => {
-    if(rain){
-        toggleRain.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M6,19A5,5 0 0,1 1,14A5,5 0 0,1 6,9C7,6.65 9.3,5 12,5C15.43,5 18.24,7.66 18.5,11.03L19,11A4,4 0 0,1 23,15A4,4 0 0,1 19,19H6M19,13H17V12A5,5 0 0,0 12,7C9.5,7 7.45,8.82 7.06,11.19C6.73,11.07 6.37,11 6,11A3,3 0 0,0 3,14A3,3 0 0,0 6,17H19A2,2 0 0,0 21,15A2,2 0 0,0 19,13Z" /></svg>'
-        document.getElementById('status').innerHTML = 'c l o u d y';
-        rain = false;
-        localStorage.setItem("rain", true);
+    if(!storm){
+        toggleRain.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5,13.59C5,13.87 5.14,14.5 4.87,14.96C4.59,15.44 4,15.6 3.5,15.33V15.33C2,14.47 1,12.85 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16A1,1 0 0,1 18,15A1,1 0 0,1 19,14A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,12.11 3.6,13.08 4.5,13.6V13.59M9.5,11H12.5L10.5,15H12.5L8.75,22L9.5,17H7L9.5,11M17.5,18.67C17.5,19.96 16.5,21 15.25,21C14,21 13,19.96 13,18.67C13,17.12 15.25,14.5 15.25,14.5C15.25,14.5 17.5,17.12 17.5,18.67Z" /></svg>'
+        document.getElementById('status').innerHTML = 's t o r m y';
+        pageSound.innerHTML = `<audio id="audio-player" src="./audio/storm.wav" type="audio/wav" autoplay loop>Your browser doesn\'t support the HTML5 audio tag.</audio>`
+        checkSound()
+        storm = true;
+        localStorage.setItem("storm", true);
     }
     else{
         toggleRain.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor"d="M9,12C9.53,12.14 9.85,12.69 9.71,13.22L8.41,18.05C8.27,18.59 7.72,18.9 7.19,18.76C6.65,18.62 6.34,18.07 6.5,17.54L7.78,12.71C7.92,12.17 8.47,11.86 9,12M13,12C13.53,12.14 13.85,12.69 13.71,13.22L11.64,20.95C11.5,21.5 10.95,21.8 10.41,21.66C9.88,21.5 9.56,20.97 9.7,20.43L11.78,12.71C11.92,12.17 12.47,11.86 13,12M17,12C17.53,12.14 17.85,12.69 17.71,13.22L16.41,18.05C16.27,18.59 15.72,18.9 15.19,18.76C14.65,18.62 14.34,18.07 14.5,17.54L15.78,12.71C15.92,12.17 16.47,11.86 17,12M17,10V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,12.11 3.6,13.08 4.5,13.6V13.59C5,13.87 5.14,14.5 4.87,14.96C4.59,15.43 4,15.6 3.5,15.32V15.33C2,14.47 1,12.85 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12C23,13.5 22.2,14.77 21,15.46V15.46C20.5,15.73 19.91,15.57 19.63,15.09C19.36,14.61 19.5,14 20,13.72V13.73C20.6,13.39 21,12.74 21,12A2,2 0 0,0 19,10H17Z" /></svg>'
+        pageSound.innerHTML = '<audio id="audio-player" src="./audio/rain.wav" type="audio/wav" autoplay loop>Your browser doesn\'t support the HTML5 audio tag.</audio>' 
+        checkSound()
         document.getElementById('status').innerHTML = 'r a i n y';
-        rain = true;
-        localStorage.removeItem("rain");
+        storm = false;
+        localStorage.removeItem("storm");
     }
 })
 
@@ -46,9 +80,22 @@ window.addEventListener('load', () => {
     }
 
     // Check local storage for rain on/off
-    if(localStorage.getItem("rain")){
-        toggleRain.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M6,19A5,5 0 0,1 1,14A5,5 0 0,1 6,9C7,6.65 9.3,5 12,5C15.43,5 18.24,7.66 18.5,11.03L19,11A4,4 0 0,1 23,15A4,4 0 0,1 19,19H6M19,13H17V12A5,5 0 0,0 12,7C9.5,7 7.45,8.82 7.06,11.19C6.73,11.07 6.37,11 6,11A3,3 0 0,0 3,14A3,3 0 0,0 6,17H19A2,2 0 0,0 21,15A2,2 0 0,0 19,13Z" /></svg>'
-        document.getElementById('status').innerHTML = 'c l o u d y';  
-        rain = false;      
+    if(localStorage.getItem("storm")){
+        toggleRain.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5,13.59C5,13.87 5.14,14.5 4.87,14.96C4.59,15.44 4,15.6 3.5,15.33V15.33C2,14.47 1,12.85 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16A1,1 0 0,1 18,15A1,1 0 0,1 19,14A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,12.11 3.6,13.08 4.5,13.6V13.59M9.5,11H12.5L10.5,15H12.5L8.75,22L9.5,17H7L9.5,11M17.5,18.67C17.5,19.96 16.5,21 15.25,21C14,21 13,19.96 13,18.67C13,17.12 15.25,14.5 15.25,14.5C15.25,14.5 17.5,17.12 17.5,18.67Z" /></svg>'
+        pageSound.innerHTML = '<audio id="audio-player" src="./audio/storm.wav" type="audio/wav" autoplay loop>Your browser doesn\'t support the HTML5 audio tag.</audio>'
+        document.getElementById('status').innerHTML = 's t o r m y';  
+        storm = true;      
+    }
+    else{
+        pageSound.innerHTML = '<audio id="audio-player" src="./audio/rain.wav" type="audio/wav" autoplay loop>Your browser doesn\'t support the HTML5 audio tag.</audio>'
+    }
+
+    //Check local storage for sound on/off
+    if(localStorage.getItem("mute")){
+        console.log(localStorage.getItem("mute"))
+        toggleSound.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" /></svg>'
+        let x = pageSound.innerHTML;
+        pageSound.innerHTML = x.substring(0,x.indexOf(' ')) + ' muted' + x.substring(x.indexOf(' '))
+        mute = true;
     }
 })
